@@ -17,8 +17,8 @@ export class ApiCategory {
   title: string;
 
   @OneToMany(() => ApiUnit, (unit) => unit.apiCategory)
-  apiUnit: ApiUnit[];
+  apiUnits: ApiUnit[];
 
-  @ManyToOne(() => Project, (project) => project.apiCategory)
+  @ManyToOne(() => Project, (project) => project.apiCategories)
   project: Project;
 }

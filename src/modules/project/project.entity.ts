@@ -38,17 +38,17 @@ export class Project {
   results: string;
 
   @OneToMany(() => ProjectTechStack, (pStack) => pStack.project)
-  projectTechStack: ProjectTechStack[];
+  projectTechStacks: ProjectTechStack[];
 
   @OneToMany(() => ProjectUser, (projectUser) => projectUser.project)
-  projectUser: ProjectUser[];
+  projectUsers: ProjectUser[];
 
   @OneToMany(() => Platform, (platform) => platform.project)
-  platform: Platform[];
+  platforms: Platform[];
 
   @OneToMany(() => ApiCategory, (category) => category.project)
-  apiCategory: ApiCategory[];
+  apiCategories: ApiCategory[];
 
-  @ManyToOne(() => Portfolio, (portfolio) => portfolio.project)
+  @ManyToOne(() => Portfolio, (portfolio) => portfolio.projects)
   portfolio: Portfolio;
 }

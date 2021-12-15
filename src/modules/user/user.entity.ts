@@ -21,8 +21,8 @@ export class User {
   portfolio: Portfolio;
 
   @OneToMany(() => Contact, (contact) => contact.user)
-  contact: Contact[];
+  contacts: Contact[];
 
   @OneToMany(() => ProjectUser, (projectUser) => projectUser.user)
-  projectUser: ProjectUser[];
+  projectUsers: ProjectUser[];
 }

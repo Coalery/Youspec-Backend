@@ -10,9 +10,9 @@ export class ProjectUser {
   @Column({ type: 'varchar', default: '[]' })
   contributions: string;
 
-  @ManyToOne(() => User, (user) => user.projectUser)
+  @ManyToOne(() => User, (user) => user.projectUsers)
   user: User;
 
-  @ManyToOne(() => Project, (project) => project.projectUser)
+  @ManyToOne(() => Project, (project) => project.projectUsers)
   project: Project;
 }

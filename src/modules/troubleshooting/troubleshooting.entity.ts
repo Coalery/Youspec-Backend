@@ -12,6 +12,6 @@ export class Troubleshooting {
   @Column({ type: 'varchar' })
   contents: string;
 
-  @ManyToOne(() => Platform, (platform) => platform.troubleshooting)
+  @ManyToOne(() => Platform, (platform) => platform.troubleshootings)
   platform: Platform;
 }

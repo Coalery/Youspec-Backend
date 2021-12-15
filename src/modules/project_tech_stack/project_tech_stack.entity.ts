@@ -7,9 +7,9 @@ export class ProjectTechStack {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @ManyToOne(() => TechStack, (techStack) => techStack.projectTechStack)
+  @ManyToOne(() => TechStack, (techStack) => techStack.projectTechStacks)
   techStack: TechStack;
 
-  @ManyToOne(() => Project, (project) => project.projectTechStack)
+  @ManyToOne(() => Project, (project) => project.projectTechStacks)
   project: Project;
 }

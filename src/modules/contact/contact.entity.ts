@@ -20,6 +20,6 @@ export class Contact {
   @Column({ type: 'varchar' })
   type: ContactType;
 
-  @ManyToOne(() => User, (user) => user.contact)
+  @ManyToOne(() => User, (user) => user.contacts)
   user: User;
 }

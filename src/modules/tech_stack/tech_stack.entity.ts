@@ -17,5 +17,5 @@ export class TechStack {
   portfolioTechStacks: PortfolioTechStack[];
 
   @OneToMany(() => ProjectTechStack, (pStack) => pStack.techStack)
-  projectTechStack: ProjectTechStack[];
+  projectTechStacks: ProjectTechStack[];
 }

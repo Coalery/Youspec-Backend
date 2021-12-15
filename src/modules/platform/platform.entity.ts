@@ -20,8 +20,8 @@ export class Platform {
   relatedUrl: string;
 
   @OneToMany(() => Troubleshooting, (tShot) => tShot.platform)
-  troubleshooting: Troubleshooting;
+  troubleshootings: Troubleshooting;
 
-  @ManyToOne(() => Project, (project) => project.platform)
+  @ManyToOne(() => Project, (project) => project.platforms)
   project: Project;
 }
