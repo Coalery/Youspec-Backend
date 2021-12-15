@@ -1,12 +1,14 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import config from './config';
 import { CatchAllFilter } from './filters/catch_all.filter';
 import { HttpExceptionFilter } from './filters/http_exception.filter';
+import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { TechStackModule } from './modules/tech_stack/tech_stack.module';
 
 @Module({
   imports: [
@@ -15,10 +17,12 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
       load: [config],
     }),
     TypeOrmModule.forRoot(),
+    TechStackModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: CatchAllFilter },
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
+    { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
   ],
   controllers: [AppController],
 })
