@@ -12,6 +12,6 @@ export class Philosophy {
   @Column({ type: 'varchar' })
   content: string;
 
-  @ManyToOne(() => Portfolio, (portfolio) => portfolio.philosophy)
+  @ManyToOne(() => Portfolio, (portfolio) => portfolio.philosophies)
   portfolio: Portfolio;
 }

@@ -18,6 +18,6 @@ export class Academic {
   @Column({ type: 'datetime', nullable: true })
   endDate?: Date;
 
-  @ManyToOne(() => Portfolio, (portfolio) => portfolio.academic)
+  @ManyToOne(() => Portfolio, (portfolio) => portfolio.academics)
   portfolio: Portfolio;
 }
