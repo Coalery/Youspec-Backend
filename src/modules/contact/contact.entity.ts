@@ -15,7 +15,7 @@ export class Contact {
   id: number;
 
   @Column({ type: 'varchar' })
-  url: string;
+  info: string;
 
   @Column({ type: 'varchar' })
   type: ContactType;
