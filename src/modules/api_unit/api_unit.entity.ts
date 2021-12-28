@@ -24,7 +24,13 @@ export class ApiUnit {
   requestValues: string;
 
   @Column({ type: 'varchar' })
+  requestExample: string;
+
+  @Column({ type: 'varchar' })
   responseValues: string;
+
+  @Column({ type: 'varchar' })
+  responseExample: string;
 
   @ManyToOne(() => ApiCategory, (category) => category.apiUnits)
   apiCategory: ApiCategory;

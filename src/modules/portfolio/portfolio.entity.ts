@@ -1,4 +1,10 @@
-import { Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Academic } from '../academic/academic.entity';
 import { Activity } from '../activity/activity.entity';
 import { Philosophy } from '../philosophy/philosophy.entity';
@@ -10,6 +16,9 @@ import { User } from '../user/user.entity';
 export class Portfolio {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
+
+  @Column({ type: 'varchar', unique: true })
+  customeName: string;
 
   @OneToOne(() => User, (user) => user.portfolio)
   user: User;

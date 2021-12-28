@@ -7,7 +7,7 @@ export class Academic {
   id: number;
 
   @Column({ type: 'varchar' })
-  title: string;
+  name: string;
 
   @Column({ type: 'varchar', nullable: true })
   description?: string;

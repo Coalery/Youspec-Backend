@@ -26,13 +26,19 @@ export class Project {
   endDate?: Date;
 
   @Column({ type: 'varchar', nullable: true })
-  description?: string;
+  coverImageUrl: string;
+
+  @Column({ type: 'varchar' })
+  introduction: string;
 
   @Column({ type: 'varchar', default: '[]' })
   featureImageUrls: string;
 
   @Column({ type: 'varchar', default: '[]' })
   featureStrings: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  dbERDUrl: string;
 
   @Column({ type: 'varchar', default: '[]' })
   results: string;
