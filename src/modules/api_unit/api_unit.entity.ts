@@ -20,16 +20,16 @@ export class ApiUnit {
   @Column({ type: 'varchar' })
   requestUrl: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'mediumtext' })
   requestValues: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'mediumtext' })
   requestExample: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'mediumtext' })
   responseValues: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'mediumtext' })
   responseExample: string;
 
   @ManyToOne(() => ApiCategory, (category) => category.apiUnits)

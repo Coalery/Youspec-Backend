@@ -20,6 +20,12 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response<T>> {
-    return next.handle().pipe(map((data) => ({ code: 200, data: data })));
+    return next.handle().pipe(
+      map((data) => ({
+        code: 200,
+        data: data,
+        timestamp: new Date().toISOString(),
+      })),
+    );
   }
 }

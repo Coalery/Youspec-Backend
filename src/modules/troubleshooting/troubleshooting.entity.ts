@@ -9,7 +9,7 @@ export class Troubleshooting {
   @Column({ type: 'varchar' })
   title: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'mediumtext' })
   contents: string;
 
   @ManyToOne(() => Platform, (platform) => platform.troubleshootings)
