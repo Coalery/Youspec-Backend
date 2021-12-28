@@ -6,8 +6,8 @@ import { AppController } from './app.controller';
 import config from './config';
 import { CatchAllFilter } from './filters/catch_all.filter';
 import { HttpExceptionFilter } from './filters/http_exception.filter';
-import { TransformInterceptor } from './interceptor/transform.interceptor';
-import { LoggerMiddleware } from './middleware/logger.middleware';
+import { TransformInterceptor } from './interceptors/transform.interceptor';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ProjectModule } from './modules/project/project.module';
 import { TechStackModule } from './modules/tech_stack/tech_stack.module';
 
