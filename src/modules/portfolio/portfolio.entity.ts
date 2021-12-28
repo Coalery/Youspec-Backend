@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -18,9 +19,13 @@ export class Portfolio {
   id: number;
 
   @Column({ type: 'varchar', unique: true })
-  customeName: string;
+  customName: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  backgroundImageUrl?: string;
 
   @OneToOne(() => User, (user) => user.portfolio)
+  @JoinColumn()
   user: User;
 
   @OneToMany(() => Activity, (activity) => activity.portfolio)
