@@ -14,7 +14,7 @@ export class CatchAllFilter implements ExceptionFilter {
     const response: Response = host.switchToHttp().getResponse();
     response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       code: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: 'Internal Server Error',
+      data: 'Internal Server Error',
       timestamp: new Date().toISOString(),
     });
   }
