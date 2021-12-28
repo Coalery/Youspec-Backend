@@ -8,6 +8,7 @@ import { CatchAllFilter } from './filters/catch_all.filter';
 import { HttpExceptionFilter } from './filters/http_exception.filter';
 import { TransformInterceptor } from './interceptors/transform.interceptor';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { PortfolioModule } from './modules/portfolio/portfolio.module';
 import { ProjectModule } from './modules/project/project.module';
 import { TechStackModule } from './modules/tech_stack/tech_stack.module';
 
@@ -20,6 +21,7 @@ import { TechStackModule } from './modules/tech_stack/tech_stack.module';
     TypeOrmModule.forRoot(),
     ProjectModule,
     TechStackModule,
+    PortfolioModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: CatchAllFilter },
