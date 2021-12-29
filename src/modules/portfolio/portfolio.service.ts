@@ -20,6 +20,8 @@ export class PortfolioService {
       .leftJoinAndSelect('portfolio.portfolioTechStacks', 'techStacks')
       .leftJoinAndSelect('techStacks.techStack', 'techStack')
       .leftJoinAndSelect('portfolio.projects', 'projects')
+      .leftJoinAndSelect('projects.projectTechStacks', 'pStacks')
+      .leftJoinAndSelect('pStacks.techStack', 'pTechStack')
       .leftJoinAndSelect('portfolio.activities', 'activities')
       .leftJoinAndSelect('portfolio.academics', 'academics')
       .getOne();
