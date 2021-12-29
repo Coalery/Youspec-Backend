@@ -15,6 +15,7 @@ export class PortfolioService {
       .createQueryBuilder('portfolio')
       .where('`customName`=:customName', { customName })
       .leftJoinAndSelect('portfolio.user', 'user')
+      .leftJoinAndSelect('user.contacts', 'contacts')
       .leftJoinAndSelect('portfolio.philosophies', 'philosophies')
       .leftJoinAndSelect('portfolio.portfolioTechStacks', 'techStacks')
       .leftJoinAndSelect('techStacks.techStack', 'techStack')
@@ -37,5 +38,26 @@ export class PortfolioService {
     });
 
     return portfolio;
+  }
+
+  async savePortfolio(portfolio: Portfolio): Promise<void> {
+    const beforePortfolio = await this.portfolioRepository.findOne(
+      portfolio.id,
+    );
+
+    if (!beforePortfolio) {
+      throw new HttpException(
+        "Can't find portfolio with given id.",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    portfolio.projects.forEach((project) => {
+      project.featureImageUrls = JSON.stringify(project.featureImageUrls);
+      project.featureStrings = JSON.stringify(project.featureStrings);
+      project.results = JSON.stringify(project.results);
+    });
+
+    await this.portfolioRepository.save(portfolio);
   }
 }

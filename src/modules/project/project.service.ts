@@ -49,4 +49,16 @@ export class ProjectService {
       .where('techStack.name in (:filters)', { filters: filters.join(',') })
       .getMany();
   }
+
+  async saveProject(project: Project): Promise<void> {
+    project.featureImageUrls = JSON.stringify(project.featureImageUrls);
+    project.featureStrings = JSON.stringify(project.featureStrings);
+    project.results = JSON.stringify(project.results);
+
+    project.projectUsers.forEach((projectUser) => {
+      projectUser.contributions = JSON.stringify(projectUser.contributions);
+    });
+
+    await this.projectRepository.save(project);
+  }
 }
