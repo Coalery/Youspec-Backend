@@ -13,7 +13,7 @@ export class ProjectService {
     const project: Project = await this.projectRepository
       .createQueryBuilder('project')
       .where('`project`.`id`=:id', { id })
-      .leftJoin('project.projectTechStacks', 'pTechStacks')
+      .leftJoinAndSelect('project.projectTechStacks', 'pTechStacks')
       .leftJoinAndSelect('pTechStacks.techStack', 'techStacks')
       .leftJoinAndSelect('project.projectUsers', 'makers')
       .leftJoinAndSelect('makers.user', 'user')
@@ -38,6 +38,13 @@ export class ProjectService {
       projectUser.contributions = JSON.parse(projectUser.contributions);
     });
 
+    project.apiCategories.forEach((apiCategory) =>
+      apiCategory.apiUnits.forEach((apiUnit) => {
+        apiUnit.requestValues = JSON.parse(apiUnit.requestValues);
+        apiUnit.responseValues = JSON.parse(apiUnit.responseValues);
+      }),
+    );
+
     return project;
   }
 
@@ -51,6 +58,29 @@ export class ProjectService {
   }
 
   async saveProject(project: Project): Promise<void> {
+    project.projectTechStacks.forEach((stack) => {
+      if (typeof stack.id === 'string') delete stack.id;
+    });
+    project.projectTechStacks = project.projectTechStacks.filter(
+      (stack) => stack.techStack.name !== '선택',
+    );
+
+    project.apiCategories.forEach((apiCategory) => {
+      if (typeof apiCategory.id === 'string') delete apiCategory.id;
+      apiCategory.apiUnits.forEach((apiUnit) => {
+        if (typeof apiUnit.id === 'string') delete apiUnit.id;
+        apiUnit.requestValues = JSON.stringify(apiUnit.requestValues);
+        apiUnit.responseValues = JSON.stringify(apiUnit.responseValues);
+      });
+    });
+
+    project.platforms.forEach((platform) =>
+      platform.troubleshootings.forEach((troubleshooting) => {
+        if (typeof troubleshooting.id === 'string') delete troubleshooting.id;
+        if (troubleshooting.platform) delete troubleshooting.platform;
+      }),
+    );
+
     project.featureImageUrls = JSON.stringify(project.featureImageUrls);
     project.featureStrings = JSON.stringify(project.featureStrings);
     project.results = JSON.stringify(project.results);

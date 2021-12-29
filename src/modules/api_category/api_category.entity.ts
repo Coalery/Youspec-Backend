@@ -16,7 +16,9 @@ export class ApiCategory {
   @Column({ type: 'varchar' })
   title: string;
 
-  @OneToMany(() => ApiUnit, (unit) => unit.apiCategory)
+  @OneToMany(() => ApiUnit, (unit) => unit.apiCategory, {
+    cascade: true,
+  })
   apiUnits: ApiUnit[];
 
   @ManyToOne(() => Project, (project) => project.apiCategories)

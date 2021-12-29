@@ -19,8 +19,10 @@ export class Platform {
   @Column({ type: 'varchar' })
   relatedUrl: string;
 
-  @OneToMany(() => Troubleshooting, (tShot) => tShot.platform)
-  troubleshootings: Troubleshooting;
+  @OneToMany(() => Troubleshooting, (tShot) => tShot.platform, {
+    cascade: true,
+  })
+  troubleshootings: Troubleshooting[];
 
   @ManyToOne(() => Project, (project) => project.platforms)
   project: Project;
