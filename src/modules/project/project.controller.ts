@@ -1,4 +1,12 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Put,
+} from '@nestjs/common';
+import { Project } from './project.entity';
 import { ProjectService } from './project.service';
 
 @Controller('project')
@@ -13,5 +21,11 @@ export class ProjectController {
   @Get(':id')
   async getProjectById(@Param('id', ParseIntPipe) id: number) {
     return await this.projectService.getProjectById(id);
+  }
+
+  @Put()
+  async saveProject(@Body() project: Project) {
+    await this.projectService.saveProject(project);
+    return {};
   }
 }

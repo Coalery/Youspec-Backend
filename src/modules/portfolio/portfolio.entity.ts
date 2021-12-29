@@ -28,18 +28,28 @@ export class Portfolio {
   @JoinColumn()
   user: User;
 
-  @OneToMany(() => Activity, (activity) => activity.portfolio)
+  @OneToMany(() => Activity, (activity) => activity.portfolio, {
+    cascade: true,
+  })
   activities: Activity[];
 
-  @OneToMany(() => Academic, (academic) => academic.portfolio)
+  @OneToMany(() => Academic, (academic) => academic.portfolio, {
+    cascade: true,
+  })
   academics: Academic[];
 
-  @OneToMany(() => Philosophy, (philosophy) => philosophy.portfolio)
+  @OneToMany(() => Philosophy, (philosophy) => philosophy.portfolio, {
+    cascade: true,
+  })
   philosophies: Philosophy[];
 
-  @OneToMany(() => PortfolioTechStack, (pStack) => pStack.portfolio)
+  @OneToMany(() => PortfolioTechStack, (pStack) => pStack.portfolio, {
+    cascade: true,
+  })
   portfolioTechStacks: PortfolioTechStack[];
 
-  @OneToMany(() => Project, (project) => project.portfolio)
+  @OneToMany(() => Project, (project) => project.portfolio, {
+    cascade: true,
+  })
   projects: Project[];
 }

@@ -43,16 +43,24 @@ export class Project {
   @Column({ type: 'varchar', default: '[]' })
   results: string;
 
-  @OneToMany(() => ProjectTechStack, (pStack) => pStack.project)
+  @OneToMany(() => ProjectTechStack, (pStack) => pStack.project, {
+    cascade: true,
+  })
   projectTechStacks: ProjectTechStack[];
 
-  @OneToMany(() => ProjectUser, (projectUser) => projectUser.project)
+  @OneToMany(() => ProjectUser, (projectUser) => projectUser.project, {
+    cascade: true,
+  })
   projectUsers: ProjectUser[];
 
-  @OneToMany(() => Platform, (platform) => platform.project)
+  @OneToMany(() => Platform, (platform) => platform.project, {
+    cascade: true,
+  })
   platforms: Platform[];
 
-  @OneToMany(() => ApiCategory, (category) => category.project)
+  @OneToMany(() => ApiCategory, (category) => category.project, {
+    cascade: true,
+  })
   apiCategories: ApiCategory[];
 
   @ManyToOne(() => Portfolio, (portfolio) => portfolio.projects)
