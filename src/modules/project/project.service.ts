@@ -135,4 +135,15 @@ export class ProjectService {
 
     await this.projectRepository.save(project);
   }
+
+  async removeProject(id: number): Promise<void> {
+    const result = await this.projectRepository.delete({ id });
+
+    if (result.affected < 1) {
+      throw new HttpException(
+        "Can't find project with given id.",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
 }

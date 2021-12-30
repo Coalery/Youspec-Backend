@@ -13,6 +13,8 @@ export class ProjectUser {
   @ManyToOne(() => User, (user) => user.projectUsers)
   user: User;
 
-  @ManyToOne(() => Project, (project) => project.projectUsers)
+  @ManyToOne(() => Project, (project) => project.projectUsers, {
+    onDelete: 'CASCADE',
+  })
   project: Project;
 }
