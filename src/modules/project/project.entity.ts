@@ -26,9 +26,9 @@ export class Project {
   endDate?: Date;
 
   @Column({ type: 'varchar', nullable: true })
-  coverImageUrl: string;
+  coverImageUrl?: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', default: '' })
   introduction: string;
 
   @Column({ type: 'varchar', default: '[]' })
@@ -38,7 +38,7 @@ export class Project {
   featureStrings: string;
 
   @Column({ type: 'varchar', nullable: true })
-  dbERDUrl: string;
+  dbERDUrl?: string;
 
   @Column({ type: 'varchar', default: '[]' })
   results: string;
