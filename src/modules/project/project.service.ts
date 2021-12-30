@@ -7,6 +7,7 @@ import { TechStackService } from '../tech_stack/tech_stack.service';
 import { UserService } from '../user/user.service';
 import { CreateProjectDto } from './project.dto';
 import { Project } from './project.entity';
+import { Platform } from '../platform/platform.entity';
 
 @Injectable()
 export class ProjectService {
@@ -86,6 +87,16 @@ export class ProjectService {
       newProjectUser.user = maker;
       return newProjectUser;
     });
+
+    newProject.platforms = data.platformNames
+      .trim()
+      .split(',')
+      .map((platformName) => {
+        const newPlatform: Platform = new Platform();
+        newPlatform.name = platformName.trim();
+        newPlatform.relatedUrl = '';
+        return newPlatform;
+      });
 
     return await this.projectRepository.save(newProject);
   }

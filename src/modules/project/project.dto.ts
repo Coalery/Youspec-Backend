@@ -8,5 +8,8 @@ export class CreateProjectDto {
   @IsNotEmpty()
   makers: string;
 
+  @IsNotEmpty()
+  platformNames: string;
+
   techStacks: TechStack[];
 }
