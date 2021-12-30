@@ -26,6 +26,6 @@ export class ProjectController {
   @Put()
   async saveProject(@Body() project: Project) {
     await this.projectService.saveProject(project);
-    return {};
+    return true;
   }
 }
