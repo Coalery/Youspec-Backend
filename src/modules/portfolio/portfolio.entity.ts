@@ -24,7 +24,9 @@ export class Portfolio {
   @Column({ type: 'varchar', nullable: true })
   backgroundImageUrl?: string;
 
-  @OneToOne(() => User, (user) => user.portfolio)
+  @OneToOne(() => User, (user) => user.portfolio, {
+    cascade: true,
+  })
   @JoinColumn()
   user: User;
 
