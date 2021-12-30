@@ -14,6 +14,6 @@ export class PortfolioController {
   @Put()
   async savePortfolio(@Body() data: Portfolio) {
     await this.portfolioService.savePortfolio(data);
-    return {};
+    return true;
   }
 }

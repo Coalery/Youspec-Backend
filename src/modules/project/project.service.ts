@@ -1,12 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ProjectTechStack } from '../project_tech_stack/project_tech_stack.entity';
+import { ProjectUser } from '../project_user/project_user.entity';
+import { TechStackService } from '../tech_stack/tech_stack.service';
+import { UserService } from '../user/user.service';
+import { CreateProjectDto } from './project.dto';
 import { Project } from './project.entity';
+import { Platform } from '../platform/platform.entity';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectRepository(Project) private projectRepository: Repository<Project>,
+    private userService: UserService,
+    private techStackService: TechStackService,
   ) {}
 
   async getProjectById(id: number): Promise<Project> {
@@ -55,6 +63,42 @@ export class ProjectService {
       .leftJoin('pStacks.techStack', 'techStack')
       .where('techStack.name in (:filters)', { filters: filters.join(',') })
       .getMany();
+  }
+
+  async createProject(data: CreateProjectDto): Promise<Project> {
+    const newProject: Project = new Project();
+    newProject.name = data.name;
+    newProject.startDate = new Date(Date.now());
+
+    newProject.projectTechStacks = data.techStacks.map((techStack) => {
+      const newProjectTechStack: ProjectTechStack = new ProjectTechStack();
+      newProjectTechStack.techStack = techStack;
+      return newProjectTechStack;
+    });
+
+    const makers = await this.userService.findByNames(
+      data.makers
+        .trim()
+        .split(',')
+        .map((v) => v.trim()),
+    );
+    newProject.projectUsers = makers.map((maker) => {
+      const newProjectUser: ProjectUser = new ProjectUser();
+      newProjectUser.user = maker;
+      return newProjectUser;
+    });
+
+    newProject.platforms = data.platformNames
+      .trim()
+      .split(',')
+      .map((platformName) => {
+        const newPlatform: Platform = new Platform();
+        newPlatform.name = platformName.trim();
+        newPlatform.relatedUrl = '';
+        return newPlatform;
+      });
+
+    return await this.projectRepository.save(newProject);
   }
 
   async saveProject(project: Project): Promise<void> {

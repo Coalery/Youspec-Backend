@@ -8,5 +8,6 @@ import { TechStackService } from './tech_stack.service';
   imports: [TypeOrmModule.forFeature([TechStack])],
   controllers: [TechStackController],
   providers: [TechStackService],
+  exports: [TechStackService],
 })
 export class TechStackModule {}

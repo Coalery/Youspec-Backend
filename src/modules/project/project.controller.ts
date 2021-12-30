@@ -4,8 +4,11 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Post,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
+import { CreateProjectDto } from './project.dto';
 import { Project } from './project.entity';
 import { ProjectService } from './project.service';
 
@@ -23,9 +26,14 @@ export class ProjectController {
     return await this.projectService.getProjectById(id);
   }
 
+  @Post()
+  async createProject(@Body(ValidationPipe) data: CreateProjectDto) {
+    return await this.projectService.createProject(data);
+  }
+
   @Put()
   async saveProject(@Body() project: Project) {
     await this.projectService.saveProject(project);
-    return {};
+    return true;
   }
 }
