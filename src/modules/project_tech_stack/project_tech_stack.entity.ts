@@ -10,6 +10,8 @@ export class ProjectTechStack {
   @ManyToOne(() => TechStack, (techStack) => techStack.projectTechStacks)
   techStack: TechStack;
 
-  @ManyToOne(() => Project, (project) => project.projectTechStacks)
+  @ManyToOne(() => Project, (project) => project.projectTechStacks, {
+    onDelete: 'CASCADE',
+  })
   project: Project;
 }

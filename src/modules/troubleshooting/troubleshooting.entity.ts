@@ -12,6 +12,8 @@ export class Troubleshooting {
   @Column({ type: 'mediumtext' })
   contents: string;
 
-  @ManyToOne(() => Platform, (platform) => platform.troubleshootings)
+  @ManyToOne(() => Platform, (platform) => platform.troubleshootings, {
+    onDelete: 'CASCADE',
+  })
   platform: Platform;
 }

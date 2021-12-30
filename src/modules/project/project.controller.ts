@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -34,6 +35,12 @@ export class ProjectController {
   @Put()
   async saveProject(@Body() project: Project) {
     await this.projectService.saveProject(project);
+    return true;
+  }
+
+  @Delete(':id')
+  async removeProject(@Param('id', ParseIntPipe) id: number) {
+    await this.projectService.removeProject(id);
     return true;
   }
 }

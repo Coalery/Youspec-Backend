@@ -24,6 +24,8 @@ export class Platform {
   })
   troubleshootings: Troubleshooting[];
 
-  @ManyToOne(() => Project, (project) => project.platforms)
+  @ManyToOne(() => Project, (project) => project.platforms, {
+    onDelete: 'CASCADE',
+  })
   project: Project;
 }

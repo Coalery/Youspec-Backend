@@ -21,6 +21,8 @@ export class ApiCategory {
   })
   apiUnits: ApiUnit[];
 
-  @ManyToOne(() => Project, (project) => project.apiCategories)
+  @ManyToOne(() => Project, (project) => project.apiCategories, {
+    onDelete: 'CASCADE',
+  })
   project: Project;
 }
