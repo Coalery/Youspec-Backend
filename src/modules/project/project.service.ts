@@ -3,18 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectTechStack } from '../project_tech_stack/project_tech_stack.entity';
 import { ProjectUser } from '../project_user/project_user.entity';
-import { TechStackService } from '../tech_stack/tech_stack.service';
 import { UserService } from '../user/user.service';
 import { CreateProjectDto } from './project.dto';
 import { Project } from './project.entity';
 import { Platform } from '../platform/platform.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectRepository(Project) private projectRepository: Repository<Project>,
     private userService: UserService,
-    private techStackService: TechStackService,
   ) {}
 
   async getProjectById(id: number): Promise<Project> {
@@ -54,6 +53,24 @@ export class ProjectService {
     );
 
     return project;
+  }
+
+  async getMakersById(id: number): Promise<User[]> {
+    const project: Project = await this.projectRepository
+      .createQueryBuilder('project')
+      .where('`project`.`id`=:id', { id })
+      .leftJoinAndSelect('project.projectUsers', 'makers')
+      .leftJoinAndSelect('makers.user', 'user')
+      .getOne();
+
+    if (!project) {
+      throw new HttpException(
+        "Can't find project with given id.",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return project.projectUsers.map((projectUser) => projectUser.user);
   }
 
   async getFilteredProjects(filters: string[]): Promise<Project[]> {

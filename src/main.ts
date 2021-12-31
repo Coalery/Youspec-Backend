@@ -7,8 +7,9 @@ import { ServiceAccount } from 'firebase-admin';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService: ConfigService = app.get(ConfigService);
+  app.enableCors();
 
+  const configService: ConfigService = app.get(ConfigService);
   const adminConfig: ServiceAccount = {
     projectId: configService.get('firebase.projectId'),
     privateKey: configService.get('firebase.privateKey').replace(/\\n/g, '\n'),
