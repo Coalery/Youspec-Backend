@@ -12,6 +12,7 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { PortfolioModule } from './modules/portfolio/portfolio.module';
 import { ProjectModule } from './modules/project/project.module';
 import { TechStackModule } from './modules/tech_stack/tech_stack.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TechStackModule } from './modules/tech_stack/tech_stack.module';
     ProjectModule,
     TechStackModule,
     PortfolioModule,
+    UserModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: CatchAllFilter },
