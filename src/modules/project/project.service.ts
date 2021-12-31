@@ -74,12 +74,26 @@ export class ProjectService {
   }
 
   async getFilteredProjects(filters: string[]): Promise<Project[]> {
-    return await this.projectRepository
+    if (filters[0] !== 'no-filter') {
+      filters.forEach((v) => {
+        if (isNaN(parseInt(v))) {
+          throw new HttpException('Invalid filters.', HttpStatus.BAD_REQUEST);
+        }
+      });
+    }
+
+    const projects: Project[] = await this.projectRepository
       .createQueryBuilder('project')
-      .leftJoin('project.projectTechStacks', 'pStacks')
-      .leftJoin('pStacks.techStack', 'techStack')
-      .where('techStack.name in (:filters)', { filters: filters.join(',') })
+      .leftJoinAndSelect('project.projectTechStacks', 'pStacks')
+      .leftJoinAndSelect('pStacks.techStack', 'techStack')
       .getMany();
+
+    if (filters[0] === 'no-filter') return projects;
+    return projects.filter((project) =>
+      project.projectTechStacks.some((pTechStack) =>
+        filters.some((filter) => pTechStack.techStack.id === +filter),
+      ),
+    );
   }
 
   async createProject(data: CreateProjectDto): Promise<Project> {
