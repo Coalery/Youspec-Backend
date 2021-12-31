@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { auth } from 'firebase-admin';
 import { Repository } from 'typeorm';
+import { Portfolio } from '../portfolio/portfolio.entity';
 import { User } from './user.entity';
 
 @Injectable()
@@ -34,5 +36,28 @@ export class UserService {
     }
 
     return users;
+  }
+
+  async signUp(data: auth.DecodedIdToken): Promise<User> {
+    if (!data) {
+      throw new HttpException('Token is required.', HttpStatus.BAD_REQUEST);
+    }
+
+    const user: User = await this.userRepository.findOne(data.uid);
+    if (user) return user;
+
+    console.log(data);
+
+    const newUser: User = new User();
+    newUser.id = data.uid;
+    newUser.name = data.name;
+    newUser.profileUrl = data.picture;
+
+    const portfolio: Portfolio = new Portfolio();
+    portfolio.customName = data.uid;
+    portfolio.user = newUser;
+    newUser.portfolio = portfolio;
+
+    return await this.userRepository.save(newUser);
   }
 }
