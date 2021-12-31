@@ -9,6 +9,7 @@ import {
   Put,
   ValidationPipe,
 } from '@nestjs/common';
+import { Roles } from 'src/decorators/roles.decorator';
 import { CreateProjectDto } from './project.dto';
 import { Project } from './project.entity';
 import { ProjectService } from './project.service';
@@ -28,18 +29,21 @@ export class ProjectController {
   }
 
   @Post()
+  @Roles('user')
   async createProject(@Body(ValidationPipe) data: CreateProjectDto) {
     return await this.projectService.createProject(data);
   }
 
-  @Put()
+  @Put(':projectId')
+  @Roles('maker')
   async saveProject(@Body() project: Project) {
     await this.projectService.saveProject(project);
     return true;
   }
 
-  @Delete(':id')
-  async removeProject(@Param('id', ParseIntPipe) id: number) {
+  @Delete(':projectId')
+  @Roles('maker')
+  async removeProject(@Param('projectId', ParseIntPipe) id: number) {
     await this.projectService.removeProject(id);
     return true;
   }

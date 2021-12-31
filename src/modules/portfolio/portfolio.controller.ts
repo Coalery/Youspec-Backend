@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common';
+import { Roles } from 'src/decorators/roles.decorator';
 import { Portfolio } from './portfolio.entity';
 import { PortfolioService } from './portfolio.service';
 
@@ -11,7 +12,8 @@ export class PortfolioController {
     return await this.portfolioService.getPortfolioByName(customName);
   }
 
-  @Put()
+  @Put(':name')
+  @Roles('me')
   async savePortfolio(@Body() data: Portfolio) {
     await this.portfolioService.savePortfolio(data);
     return true;

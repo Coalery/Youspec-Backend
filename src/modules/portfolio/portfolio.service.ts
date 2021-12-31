@@ -10,6 +10,22 @@ export class PortfolioService {
     private portfolioRepository: Repository<Portfolio>,
   ) {}
 
+  async getPortfolioByUserId(userId: string): Promise<Portfolio> {
+    const portfolio: Portfolio = await this.portfolioRepository
+      .createQueryBuilder('portfolio')
+      .leftJoin('portfolio.user', 'user', 'user.id = :userId', { userId })
+      .getOne();
+
+    if (!portfolio) {
+      throw new HttpException(
+        "Can't find portfolio with given user id.",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return portfolio;
+  }
+
   async getPortfolioByName(customName: string): Promise<Portfolio> {
     const portfolio: Portfolio = await this.portfolioRepository
       .createQueryBuilder('portfolio')
