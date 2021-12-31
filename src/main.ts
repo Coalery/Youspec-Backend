@@ -1,9 +1,25 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+
+import * as admin from 'firebase-admin';
+import { ServiceAccount } from 'firebase-admin';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  await app.listen(3001);
+
+  const configService: ConfigService = app.get(ConfigService);
+  const adminConfig: ServiceAccount = {
+    projectId: configService.get('firebase.projectId'),
+    privateKey: configService.get('firebase.privateKey').replace(/\\n/g, '\n'),
+    clientEmail: configService.get('firebase.clientEmail'),
+  };
+  admin.initializeApp({
+    credential: admin.credential.cert(adminConfig),
+  });
+
+  const port: string = configService.get('common.port');
+  await app.listen(port);
 }
 bootstrap();

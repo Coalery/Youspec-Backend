@@ -3,18 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectTechStack } from '../project_tech_stack/project_tech_stack.entity';
 import { ProjectUser } from '../project_user/project_user.entity';
-import { TechStackService } from '../tech_stack/tech_stack.service';
 import { UserService } from '../user/user.service';
 import { CreateProjectDto } from './project.dto';
 import { Project } from './project.entity';
 import { Platform } from '../platform/platform.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectRepository(Project) private projectRepository: Repository<Project>,
     private userService: UserService,
-    private techStackService: TechStackService,
   ) {}
 
   async getProjectById(id: number): Promise<Project> {
@@ -56,13 +55,45 @@ export class ProjectService {
     return project;
   }
 
-  async getFilteredProjects(filters: string[]): Promise<Project[]> {
-    return await this.projectRepository
+  async getMakersById(id: number): Promise<User[]> {
+    const project: Project = await this.projectRepository
       .createQueryBuilder('project')
-      .leftJoin('project.projectTechStacks', 'pStacks')
-      .leftJoin('pStacks.techStack', 'techStack')
-      .where('techStack.name in (:filters)', { filters: filters.join(',') })
+      .where('`project`.`id`=:id', { id })
+      .leftJoinAndSelect('project.projectUsers', 'makers')
+      .leftJoinAndSelect('makers.user', 'user')
+      .getOne();
+
+    if (!project) {
+      throw new HttpException(
+        "Can't find project with given id.",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return project.projectUsers.map((projectUser) => projectUser.user);
+  }
+
+  async getFilteredProjects(filters: string[]): Promise<Project[]> {
+    if (filters[0] !== 'no-filter') {
+      filters.forEach((v) => {
+        if (isNaN(parseInt(v))) {
+          throw new HttpException('Invalid filters.', HttpStatus.BAD_REQUEST);
+        }
+      });
+    }
+
+    const projects: Project[] = await this.projectRepository
+      .createQueryBuilder('project')
+      .leftJoinAndSelect('project.projectTechStacks', 'pStacks')
+      .leftJoinAndSelect('pStacks.techStack', 'techStack')
       .getMany();
+
+    if (filters[0] === 'no-filter') return projects;
+    return projects.filter((project) =>
+      project.projectTechStacks.some((pTechStack) =>
+        filters.some((filter) => pTechStack.techStack.id === +filter),
+      ),
+    );
   }
 
   async createProject(data: CreateProjectDto): Promise<Project> {
