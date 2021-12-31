@@ -43,10 +43,12 @@ export class UserService {
       throw new HttpException('Token is required.', HttpStatus.BAD_REQUEST);
     }
 
-    const user: User = await this.userRepository.findOne(data.uid);
+    const user: User = await this.userRepository
+      .createQueryBuilder('user')
+      .where('`user`.`id`=:uid', { uid: data.uid })
+      .leftJoinAndSelect('user.portfolio', 'portfolio')
+      .getOne();
     if (user) return user;
-
-    console.log(data);
 
     const newUser: User = new User();
     newUser.id = data.uid;
@@ -58,6 +60,8 @@ export class UserService {
     portfolio.user = newUser;
     newUser.portfolio = portfolio;
 
-    return await this.userRepository.save(newUser);
+    await this.userRepository.save(newUser);
+
+    return newUser;
   }
 }

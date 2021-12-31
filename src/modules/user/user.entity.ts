@@ -17,7 +17,9 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   description?: string;
 
-  @OneToOne(() => Portfolio, (portfolio) => portfolio.user)
+  @OneToOne(() => Portfolio, (portfolio) => portfolio.user, {
+    cascade: ['insert'],
+  })
   portfolio: Portfolio;
 
   @OneToMany(() => Contact, (contact) => contact.user)
