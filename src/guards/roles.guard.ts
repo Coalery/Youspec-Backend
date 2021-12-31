@@ -26,8 +26,8 @@ export class RolesGuard implements CanActivate {
     let currentRole: RoleType = 'guest';
 
     if (user.id !== 'guest') currentRole = 'user';
-    // 꼭 `maker`가 필요할 때만 작동되도록
     else if (roles[0] === 'maker' && roles.length === 1) {
+      // 꼭 `maker`가 필요할 때만 작동되도록
       const projectId = request['params'].projectId;
       if (!projectId) {
         throw new InternalServerErrorException('ProjectId params not found.');
