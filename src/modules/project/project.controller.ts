@@ -29,7 +29,7 @@ export class ProjectController {
   }
 
   @Post()
-  @Roles('user')
+  @Roles('user', 'maker')
   async createProject(@Body(ValidationPipe) data: CreateProjectDto) {
     return await this.projectService.createProject(data);
   }
