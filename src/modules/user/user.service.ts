@@ -58,7 +58,6 @@ export class UserService {
     const portfolio: Portfolio = new Portfolio();
     portfolio.customName = data.uid;
     portfolio.user = newUser;
-    newUser.portfolio = portfolio;
 
     await this.userRepository.save(newUser);
 
