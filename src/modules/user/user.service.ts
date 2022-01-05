@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { auth } from 'firebase-admin';
 import { Repository } from 'typeorm';
 import { Portfolio } from '../portfolio/portfolio.entity';
 import { User } from './user.entity';
@@ -38,27 +37,28 @@ export class UserService {
     return users;
   }
 
-  async signUp(data: auth.DecodedIdToken): Promise<User> {
-    if (!data) {
-      throw new HttpException('Token is required.', HttpStatus.BAD_REQUEST);
-    }
+  private createNewUser(uid: string, name: string, picture?: string): User {
+    const newUser: User = new User();
+    newUser.id = uid;
+    newUser.name = name;
+    newUser.profileUrl = picture;
 
+    const portfolio: Portfolio = new Portfolio();
+    portfolio.customName = uid;
+    portfolio.user = newUser;
+
+    return newUser;
+  }
+
+  async signUp(uid: string, name: string, picture?: string): Promise<User> {
     const user: User = await this.userRepository
       .createQueryBuilder('user')
-      .where('`user`.`id`=:uid', { uid: data.uid })
+      .where('`user`.`id`=:uid', { uid })
       .leftJoinAndSelect('user.portfolio', 'portfolio')
       .getOne();
     if (user) return user;
 
-    const newUser: User = new User();
-    newUser.id = data.uid;
-    newUser.name = data.name;
-    newUser.profileUrl = data.picture;
-
-    const portfolio: Portfolio = new Portfolio();
-    portfolio.customName = data.uid;
-    portfolio.user = newUser;
-
+    const newUser: User = this.createNewUser(uid, name, picture);
     await this.userRepository.save(newUser);
 
     return newUser;
