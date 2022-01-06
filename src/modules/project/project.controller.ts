@@ -10,7 +10,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Roles } from 'src/decorators/roles.decorator';
-import { CreateProjectDto } from './project.dto';
+import { CreateProjectDto, FilterProjectsResultDto } from './project.dto';
 import { Project } from './project.entity';
 import { ProjectService } from './project.service';
 
@@ -20,7 +20,10 @@ export class ProjectController {
 
   @Get('/filter/:filter')
   async getFilteredProjects(@Param('filter') filters: string) {
-    return await this.projectService.getFilteredProjects(filters.split(','));
+    const projects: Project[] = await this.projectService.getFilteredProjects(
+      filters.split(','),
+    );
+    return projects.map((project) => new FilterProjectsResultDto(project));
   }
 
   @Get(':id')
