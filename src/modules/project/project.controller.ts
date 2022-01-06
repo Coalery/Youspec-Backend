@@ -34,7 +34,8 @@ export class ProjectController {
   @Post()
   @Roles('user', 'maker')
   async createProject(@Body(ValidationPipe) data: CreateProjectDto) {
-    return await this.projectService.createProject(data);
+    await this.projectService.createProject(data);
+    return true;
   }
 
   @Put(':projectId')
