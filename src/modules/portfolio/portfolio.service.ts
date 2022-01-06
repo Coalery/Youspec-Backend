@@ -13,7 +13,8 @@ export class PortfolioService {
   async getPortfolioByUserId(userId: string): Promise<Portfolio> {
     const portfolio: Portfolio = await this.portfolioRepository
       .createQueryBuilder('portfolio')
-      .leftJoin('portfolio.user', 'user', 'user.id = :userId', { userId })
+      .leftJoin('portfolio.user', 'user')
+      .where('user.id = :userId', { userId })
       .getOne();
 
     if (!portfolio) {
