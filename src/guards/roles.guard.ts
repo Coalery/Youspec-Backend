@@ -1,6 +1,8 @@
 import {
   CanActivate,
   ExecutionContext,
+  HttpException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -73,6 +75,13 @@ export class RolesGuard implements CanActivate {
       currentRole = 'me';
     }
 
-    return roles.some((role) => role === currentRole);
+    if (!roles.some((role) => role === currentRole)) {
+      throw new HttpException(
+        "You don't have a role: " + roles.join(', '),
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    return true;
   }
 }
